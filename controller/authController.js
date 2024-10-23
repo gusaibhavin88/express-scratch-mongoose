@@ -59,3 +59,33 @@ exports.resetPassword = async (req, resp) => {
     resp.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Get User
+
+exports.getUser = async (req, resp) => {
+  try {
+    const user = await authService.getUser(req?.params, req?.user, resp);
+    resp.status(200).json({
+      success: false,
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    resp.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// List Users
+
+exports.listUsers = async (req, resp) => {
+  try {
+    const user = await authService.listUser(req?.query, resp);
+    resp.status(200).json({
+      success: false,
+      message: "Users fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    resp.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../helper/mailer");
 const moment = require("moment");
+const { paginationObject } = require("../utility/utility");
 
 class AuthService {
   generateToken = async (user) => {
@@ -30,7 +31,6 @@ class AuthService {
     if (file) {
       imageUrl = `/uploads/${file.filename}`;
     }
-    console.log(imageUrl);
     const user = await User.create({
       name,
       email,
@@ -100,6 +100,23 @@ class AuthService {
 
       user.save();
     }
+  };
+
+  // Get User
+  getUser = async (params, userData, resp) => {
+    const user = await User.findById(userData?._id).select("-password").lean();
+    return user;
+  };
+
+  // List User
+  listUser = async (searchObj, user, resp) => {
+    const pagination = paginationObject(searchObj);
+    const users = await User.find({})
+      .skip(pagination.skip)
+      .sort(pagination.sort)
+      .limit(pagination.resultPerPage);
+
+    return users;
   };
 }
 
