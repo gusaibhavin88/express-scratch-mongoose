@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  image: {
+    type: String,
+  },
+  resetToken: {
+    type: String,
+  },
+  tokenExpires: {
+    type: String,
+  },
 });
 
 const User = mongoDBConnection.model("users", userSchema);
